@@ -72,7 +72,7 @@ def main():
 
     k = 10 #for now set to constant
 
-    klist = kmer.kmerList(k-1, gene) #create kmer list (with k - 1)
+    klist = kmerList(k-1, gene) #create kmer list (with k - 1)
 
     final_dict = create_Debruijn(klist) #adjacency list dictionary
 
