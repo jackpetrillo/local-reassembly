@@ -22,16 +22,20 @@ def create_Debruijn(kmerList):
     representation of the de bruijn graph.
     """
     dictionary = {}
+    kmer_positions = {}
 
     for i in range(len(kmerList)-1): #iterate over all kmers (besides last)
         if(kmerList[i] in dictionary):
             templist = dictionary[kmerList[i]] #take list
             templist.append(kmerList[i+1]) #add new outgoing edge
             dictionary[kmerList[i]] = templist #update list
+
+            kmer_positions[kmerList[i]].append(i)
         else:
             dictionary[kmerList[i]] = [kmerList[i+1]] #create 1 element list
+            kmer_positions[kmerList[i]] = [i]
 
-    return dictionary
+    return dictionary, kmer_positions
 
 
 def kmerList(k, word):
@@ -75,7 +79,7 @@ def main():
 
     klist = kmerList(k-1, gene) #create kmer list (with k - 1)
 
-    final_dict = create_Debruijn(klist) #adjacency list dictionary
+    final_dict, kmer_positions = create_Debruijn(klist) #adjacency list dictionary
 
     print_Debruijn(final_dict)
 
