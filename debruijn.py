@@ -1,15 +1,14 @@
 """
-Jack Petrillo
-Rosalind 3/16 - 'Construct the De Bruijn Graph of a String'
+Jack Petrillo and Rose Gold
+Local Re-Assembly Final Project
 CS 321
 
 """
 
 import sys
-import kmer
 
 
-def dict_create(kmerList):
+def create_Debruijn(kmerList):
     """
     Takes as an input a list of kmers. Returns a dictionary of the adjacency list
     representation of the de bruijn graph.
@@ -24,36 +23,55 @@ def dict_create(kmerList):
         else:
             dictionary[kmerList[i]] = [kmerList[i+1]] #create 1 element list
 
-
     return dictionary
 
 
-if __name__ == "__main__":
-
+def kmerList(k, word):
     """
-    The main method reads an integer k and a string from an input file. Passes the list to
+    Takes as inputs an integer k and a String word. Returs a list of all the k-mers of word.
+    """
+
+    klist = []
+    for index in range(len(word) - k + 1):
+        klist.append(word[index:index+k])
+
+    return klist
+
+
+def print_Debruijn(graph):
+    """
+    Passed an adjacency list representation of a de bruijn graph. Prints the graph.
+    """
+
+    for key in graph: #printing all node -> outgoing nodes
+        outgoing = ""
+
+        for i in range(len(graph[key])):
+            outgoing = outgoing + graph[key][i] + ","
+
+        outgoing = outgoing[:-1]
+
+        print(key + " -> " + outgoing)
+
+
+def main():
+    """
+    The main method reads a string from an input file. Creates a kmer list and passes the list to
     the dict_create() function which returns a dictionary of an adjacency list representation
-    of the overlap graph.
+    of the overlap de bruijn graph.
     """
 
     f = open(sys.argv[1], "r")
 
-    strk = f.readline().strip()
-    k = (int)(strk) ##typecast to integer
+    k = 10 #for now set to constant
     word = f.readline().strip()
 
     klist = kmer.kmerList(k-1, word) #create kmer list (with k - 1)
-    #print(klist)
 
-    final_dict = dict_create(klist) #adjacency list dictionary
+    final_dict = create_Debruijn(klist) #adjacency list dictionary
 
-    #print(final_dict)
-    for key in final_dict: #printing all node -> outgoing nodes
-        outgoing = ""
+    print_Debruijn(final_dict)
 
-        for i in range(len(final_dict[key])):
-            outgoing = outgoing + final_dict[key][i] + ","
 
-        outgoing = outgoing[:-1]
-        
-        print(key + " -> " + outgoing)
+if __name__ == "__main__":
+    main()
