@@ -12,6 +12,7 @@ def get_gene(filename):
     with open(filename, 'r') as file_object:
         file_object.readline()
         input_str = file_object.read().strip()
+        input_str.replace("\n", "")
     return input_str
 
 
