@@ -7,6 +7,13 @@ CS 321
 
 import sys
 
+def get_gene(filename):
+
+    with open(filename, 'r') as file_object:
+        file_object.readline()
+        input_str = file_object.read().strip()
+    return input_str
+
 
 def create_Debruijn(kmerList):
     """
@@ -61,12 +68,11 @@ def main():
     of the overlap de bruijn graph.
     """
 
-    f = open(sys.argv[1], "r")
+    gene = get_gene("OPN1LW.txt")
 
     k = 10 #for now set to constant
-    word = f.readline().strip()
 
-    klist = kmer.kmerList(k-1, word) #create kmer list (with k - 1)
+    klist = kmer.kmerList(k-1, gene) #create kmer list (with k - 1)
 
     final_dict = create_Debruijn(klist) #adjacency list dictionary
 
