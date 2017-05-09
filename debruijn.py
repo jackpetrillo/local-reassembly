@@ -29,6 +29,7 @@ def dict_create(kmerList):
 
 
 if __name__ == "__main__":
+
     """
     The main method reads an integer k and a string from an input file. Passes the list to
     the dict_create() function which returns a dictionary of an adjacency list representation
