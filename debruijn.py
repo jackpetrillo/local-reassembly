@@ -27,12 +27,13 @@ def create_Debruijn(kmerList):
     for i in range(len(kmerList)-1): #iterate over all kmers (besides last)
         if(kmerList[i] in dictionary):
             templist = dictionary[kmerList[i]] #take list
-            templist.append(kmerList[i+1]) #add new outgoing edge
+            templist[0].append(kmerList[i+1]) #add new outgoing edge
+            templist[1].append(0)
             dictionary[kmerList[i]] = templist #update list
 
             kmer_positions[kmerList[i]].append(i)
         else:
-            dictionary[kmerList[i]] = [kmerList[i+1]] #create 1 element list
+            dictionary[kmerList[i]] = [[kmerList[i+1]], [0]] #create 1 element list
             kmer_positions[kmerList[i]] = [i]
 
     return dictionary, kmer_positions
