@@ -59,8 +59,8 @@ def print_Debruijn(graph):
     for key in graph: #printing all node -> outgoing nodes
         outgoing = ""
 
-        for i in range(len(graph[key])):
-            outgoing = outgoing + graph[key][i] + ","
+        for i in range(len(graph[key][0])):
+            outgoing = outgoing + graph[key][0][i] + " " + str(graph[key][1][i]) + ","
 
         outgoing = outgoing[:-1]
 
@@ -76,13 +76,15 @@ def main():
 
     gene = get_gene("OPN1LW.txt")
 
-    k = 10 #for now set to constant
+    kmer_size_list = [10, 25]
+    for k in kmer_size_list:
+        print("THIS IS THE GRAPH FOR KMER SIZE: " + str(k))
 
-    klist = kmerList(k-1, gene) #create kmer list (with k - 1)
+        klist = kmerList(k-1, gene) #create kmer list (with k - 1)
 
-    final_dict, kmer_positions = create_Debruijn(klist) #adjacency list dictionary
+        final_dict, kmer_positions = create_Debruijn(klist) #adjacency list dictionary
 
-    print_Debruijn(final_dict)
+        print_Debruijn(final_dict)
 
 
 if __name__ == "__main__":
