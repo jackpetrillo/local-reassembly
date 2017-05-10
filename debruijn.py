@@ -59,8 +59,8 @@ def print_Debruijn(graph):
     for key in graph: #printing all node -> outgoing nodes
         outgoing = ""
 
-        for i in range(len(graph[key])):
-            outgoing = outgoing + graph[key][i] + ","
+        for i in range(len(graph[key][0])):
+            outgoing = outgoing + graph[key][0][i] + " " + str(graph[key][1][i]) + ","
 
         outgoing = outgoing[:-1]
 
