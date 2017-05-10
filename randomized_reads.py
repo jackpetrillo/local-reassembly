@@ -5,13 +5,12 @@ CS 321
 Generate Randomized Reads from a Sequence
 """
 
-def kmerList(k, word):
-    """
-    Takes as inputs an integer k and a String word. Returs a list of all the k-mers of word.
-    """
+from random import randint
 
-    klist = []
-    for index in range(len(word) - k + 1):
-        klist.append(word[index:index+k])
+def get_gene(filename):
 
-    return klist
+    with open(filename, 'r') as file_object:
+        file_object.readline()
+        input_str = file_object.read().strip()
+        input_str = input_str.replace("\n", "")
+    return input_str
