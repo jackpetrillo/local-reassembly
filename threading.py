@@ -9,33 +9,31 @@ import debruijn as db
 import randomized_reads as rr
 
 
-def thread(read, genome_db, genome_hash, gene_k):
+def thread(variant_reads, genome_db, genome_hash, gene_k):
     """
 
     """
-    read_kmers = db.kmerList(gene_k, read)
 
-    cur_kmer = read_kmers[0]
-    start_position = -1
+    ###GO THROUGH ALL READS
+    for read in variant_reads:
+        read_kmers = db.kmerList(gene_k - 1, read)
+        ###GO THROUGH KMERS OF SIZE GENE_K WITHIN READ
+        for i in range(len(read_kmers)-1):
+            cur_kmer = read_kmers[i] #current kmer in read
+            if(cur_kmer in genome_db): #if already in the graph
+                #check to see if it points to the next kmer in genome_db
+                for j in range(len(genome_db[cur_kmer][0])): #for every kmer this node points to
+                    if(genome_db[cur_kmer][0][j] == read_kmers[i+1]): #if next in variant matches
+                        genome_db[cur_kmer][1][j] += 1 #increment weight
 
-    if cur_kmer in genome_hash:
-        start_position = genome_hash[cur_kmer]
-    else:
-        genome_hash[cur_kmer] = 0
-        genome_db[cur_kmer] = [[read_kmers[1]],[1]]
+            else:
+                genome_db[cur_kmer] = [[read_kmers[i+1]], [1]] #create a new node
 
 
 
 
+    return genome_db, genome_hash
 
-def get_Variant(genome, k):
-    """
-
-    """
-    var_seq = rr.rand_variant(genome, 10) #10 is probability
-    read_list = db.kmerList(k, var_seq)
-
-    return read_list[-1] #returns last element of read_list
 
 
 def main():
@@ -49,16 +47,18 @@ def main():
     # genome_db, kmer_positions = db.create_Debruijn(genome_kmerlist)
 
     gene_k = 25
+    prob = 50
+    read_length = 50
 
     genome_db, kmer_positions, gene = db.main(gene_k)
 
-    read_k = 50
-    sample_variant = get_Variant(gene, read_k)
+    variant = rr.rand_variant(gene, prob) #full sequence with SNVs w. probability prob
+    variant_reads = db.kmerList(read_length, variant)
 
     #print(gene)
     #print(sample_variant)
 
-    thread(sample_variant, genome_db, kmer_positions, gene_k)
+    thread(variant_reads, genome_db, kmer_positions, gene_k)
 
 
 
