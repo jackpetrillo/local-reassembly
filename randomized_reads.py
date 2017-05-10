@@ -26,8 +26,8 @@ def rand_variant(seq, prob):
     for nuc in seq:
         cur_prob = randint(1, prob)
         if cur_prob == 1:
-            temp_bases = nuc_bases.replace("nuc", '')
-            new_nuc = temp_bases[randint(0,3)]
+            temp_bases = nuc_bases.replace(nuc, '')
+            new_nuc = temp_bases[randint(0,2)]
             new_seq += new_nuc
         else:
             new_seq += nuc
@@ -50,13 +50,15 @@ def readList(read_len, seq):
 
 
 def main():
-    gene = get_gene("OPN1LW.txt")
-    prob = 50 #each nuc has a prob of 1/50 that it will become a variant
+    #gene = get_gene("OPN1LW.txt")
+    gene = "ACTGCCCGGGTTT"
+    print(gene)
+    prob = 10 #each nuc has a prob of 1/50 that it will become a variant
     read_len = 50 #temp
     rand_variant(gene, prob)
     var_seq = rand_variant(gene, prob)
-
-    read_list = readList(read_len, var_seq)
+    print(var_seq)
+    #read_list = readList(read_len, var_seq)
 
 
 if __name__ == '__main__':
