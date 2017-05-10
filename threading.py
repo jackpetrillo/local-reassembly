@@ -43,10 +43,14 @@ def main():
     Main method. Has a sample variant and k. Reads genome from file, creates, a kmerlist,
     creates the genome graph and kmer hash. Threads the sample variant into the db graph.
     """
+    # gene_k = 25
+    # gene = db.get_gene("OPN1LW.txt")
+    # genome_kmerlist = db.kmerList(gene_k, gene)
+    # genome_db, kmer_positions = db.create_Debruijn(genome_kmerlist)
+
     gene_k = 25
-    gene = db.get_gene("OPN1LW.txt")
-    genome_kmerlist = db.kmerList(gene_k, gene)
-    genome_db, kmer_positions = db.create_Debruijn(genome_kmerlist)
+
+    genome_db, kmer_positions, gene = db.main(gene_k)
 
     read_k = 50
     sample_variant = get_Variant(gene, read_k)

@@ -67,7 +67,7 @@ def print_Debruijn(graph):
         print(key + " -> " + outgoing)
 
 
-def main():
+def main(k):
     """
     The main method reads a string from an input file. Creates a kmer list and passes the list to
     the dict_create() function which returns a dictionary of an adjacency list representation
@@ -76,15 +76,22 @@ def main():
 
     gene = get_gene("OPN1LW.txt")
 
-    kmer_size_list = [10, 25]
-    for k in kmer_size_list:
-        print("THIS IS THE GRAPH FOR KMER SIZE: " + str(k))
+    # kmer_size_list = [10, 25]
+    # for k in kmer_size_list:
+    #     print("THIS IS THE GRAPH FOR KMER SIZE: " + str(k))
+    #
+    #     klist = kmerList(k-1, gene) #create kmer list (with k - 1)
+    #
+    #     final_dict, kmer_positions = create_Debruijn(klist) #adjacency list dictionary
+    #
+    #     print_Debruijn(final_dict)
 
-        klist = kmerList(k-1, gene) #create kmer list (with k - 1)
+    klist = kmerList(k-1, gene) #create kmer list (with k - 1)
 
-        final_dict, kmer_positions = create_Debruijn(klist) #adjacency list dictionary
+    final_dict, kmer_positions = create_Debruijn(klist) #adjacency list dictionary
 
-        print_Debruijn(final_dict)
+    return (final_dict, kmer_positions, gene)
+
 
 
 if __name__ == "__main__":
