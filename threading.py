@@ -52,14 +52,21 @@ def main():
 
     genome_db, kmer_positions, gene = db.main(gene_k)
 
-    variant = rr.rand_variant(gene, prob) #full sequence with SNVs w. probability prob
-    variant_reads = db.kmerList(read_length, variant)
+    variant1 = rr.rand_variant(gene, prob) #full sequence with SNVs w. probability prob
+    variant1_reads = db.kmerList(read_length, variant1)
 
-    #print(gene)
-    #print(sample_variant)
 
-    thread(variant_reads, genome_db, kmer_positions, gene_k)
+    genome_db, genome_hash = thread(variant1_reads, genome_db, kmer_positions, gene_k)
 
+    variant2 = rr.rand_variant(gene, prob) #full sequence with SNVs w. probability prob
+    variant2_reads = db.kmerList(read_length, variant2)
+
+
+    genome_db, genome_hash = thread(variant2_reads, genome_db, kmer_positions, gene_k)
+
+
+
+    print(genome_db)
 
 
 
