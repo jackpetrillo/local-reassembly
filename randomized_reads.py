@@ -24,7 +24,7 @@ def rand_variant(seq, prob):
     nuc_bases = "ACGT"
     new_seq = ""
     for nuc in seq:
-        cur_prob = randint(1, prob)
+        cur_prob = randint(1, prob+1)
         if cur_prob == 1:
             temp_bases = nuc_bases.replace(nuc, '')
             new_nuc = temp_bases[randint(0,2)]

@@ -48,9 +48,13 @@ def uniform_reads(mat, pat, ref, depth, read_len):
         mat_or_pat = randint(0, 2)
         start_ind = randint(0, len_seq - read_len + 1)
         if mat_or_pat == 0:
-            reads.append(mat[start_ind : start_ind + read_len])
+            initial_read = mat[start_ind : start_ind + read_len]
+            error_read = rr.rand_variant(initial_read, 1000)
+            reads.append(error_read)
         else:
-            reads.append(pat[start_ind : start_ind + read_len])
+            initial_read = pat[start_ind : start_ind + read_len]
+            error_read = rr.rand_variant(initial_read, 1000)
+            reads.append(error_read)
 
     return reads
 
