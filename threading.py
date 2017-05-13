@@ -49,15 +49,37 @@ def uniform_reads(mat, pat, ref, depth, read_len):
         start_ind = randint(0, len_seq - read_len + 1)
         if mat_or_pat == 0:
             initial_read = mat[start_ind : start_ind + read_len]
-            error_read = rr.rand_variant(initial_read, 1000)
+            error_read = rr.rand_variant(initial_read, 30000)
             reads.append(error_read)
         else:
             initial_read = pat[start_ind : start_ind + read_len]
-            error_read = rr.rand_variant(initial_read, 1000)
+            error_read = rr.rand_variant(initial_read, 30000)
             reads.append(error_read)
 
     return reads
 
+
+def pruning(genome_db, threshold):
+
+    temp = genome_db
+    key_list = genome_db.keys()
+
+    for index in range(len(key_list)):
+        key = key_list[index]
+
+        if(len(genome_db[key][1]) == 1): #if only one thing in list
+            if(genome_db[key][1][0] < threshold): #and that thing has edge weight < threshold
+                del genome_db[key]
+
+        elif(len(genome_db[key][1]) > 1): #if theres more...search
+            for j in range(len(genome_db[key][0])):
+                if(genome_db[key][1][j] < threshold):
+                    genome_db[key][0].pop(j)
+                    genome_db[key][1].pop(j)
+                    j -= 1
+
+
+    return temp
 
 
 
@@ -95,6 +117,7 @@ def main():
 
     #genome_db, genome_hash = thread(variant2_reads, genome_db, kmer_positions, gene_k)
 
+    genome_db = pruning(genome_db, 10)
 
     with open("genome_db.txt", "w") as text_file:
         text_file.write(str(genome_db))
