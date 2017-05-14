@@ -52,13 +52,6 @@ def path_score(genome_db, genome_hash, ref_gene, start_kmer):
             to_search.append((end_node, path_prob))
 
         start_node = to_search.popleft()
-
-
-    for index in range(len(path_kmers)):
-        print("Position: " + str(index))
-        for j in range(len(path_kmers[index])):
-            print("kmer: " + path_kmers[index][j] + " with probability " + str(path_scores[index][j]))
-
     return path_kmers, path_scores
 
 
@@ -97,7 +90,10 @@ def main():
         print("variant start: " + str(var_starts[j]))
         print("variant end: " + str(var_ends[j]))
 
-
+    with open("haplo_likelihood.txt", "w") as text_file:
+        for j in range(len(var_ends)):
+            text_file.write(str(var_starts[j]) + '\n')
+            text_file.write(str(var_ends[j]) + '\n')
 
 if __name__ == '__main__':
     main()
