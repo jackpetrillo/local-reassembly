@@ -118,6 +118,7 @@ def main():
     #print(genome_hash)
     #print(genome_db)
 
+    return genome_db, kmer_positions, gene
 
 
 if __name__ == '__main__':
