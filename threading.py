@@ -86,9 +86,8 @@ def pruning(genome_db, threshold):
         elif(len(genome_db[key][1]) > 1): #if theres more...search
             for j in range(len(genome_db[key][1])):
                 if(genome_db[key][1][j] < threshold):
-                    temp[key][0].pop(j)
-                    temp[key][1].pop(j)
-                    j -= 1
+                    temp[key][0].remove(genome_db[key][0][j])
+                    temp[key][1].remove(genome_db[key][1][j])
 
 
     return temp
