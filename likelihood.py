@@ -20,8 +20,8 @@ def path_scores(genome_db, start_kmer):
     node = start_kmer #where we start...
     to_search = c.deque()
 
-    while node in genome_db: #while
-
+    while node in genome_db: #while the node is in the graph (Not the last node)
+        
 
 
 

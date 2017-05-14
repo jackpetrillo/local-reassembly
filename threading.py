@@ -8,6 +8,7 @@ CS 321
 import debruijn as db
 import randomized_reads as rr
 from random import randint
+import copy as c
 
 
 def thread(variant_reads, genome_db, genome_hash, gene_k, positions):
@@ -22,9 +23,21 @@ def thread(variant_reads, genome_db, genome_hash, gene_k, positions):
             cur_kmer = read_kmers[i] #current kmer in read
             if(cur_kmer in genome_db): #if already in the graph
                 #check to see if it points to the next kmer in genome_db
-                for j in range(len(genome_db[cur_kmer][0])): #for every kmer this node points to
-                    if(genome_db[cur_kmer][0][j] == read_kmers[i+1]): #if next in variant matches
-                        genome_db[cur_kmer][1][j] += 1 #increment weight
+                next_kmer = read_kmers[i+1]
+                try:
+                    index = genome_db[cur_kmer][0].index(next_kmer)
+                except ValueError:
+                    index = -1
+
+                if(index > -1):
+                    genome_db[cur_kmer][1][index] += 1
+                else:
+                    genome_db[cur_kmer][0].append(next_kmer)
+                    genome_db[cur_kmer][1].append(1)
+
+                #for j in range(len(genome_db[cur_kmer][0])): #for every kmer this node points to
+                    #if(genome_db[cur_kmer][0][j] == read_kmers[i+1]): #if next in variant matches
+                        #genome_db[cur_kmer][1][j] += 1 #increment weight
 
             else:
                 genome_db[cur_kmer] = [[read_kmers[i+1]], [1]] #create a new node
@@ -60,7 +73,7 @@ def uniform_reads(mat, pat, ref, depth, read_len):
 
 def pruning(genome_db, threshold):
 
-    temp = genome_db
+    temp = c.deepcopy(genome_db)
     key_list = genome_db.keys()
 
     for index in range(len(key_list)):
@@ -68,13 +81,13 @@ def pruning(genome_db, threshold):
 
         if(len(genome_db[key][1]) == 1): #if only one thing in list
             if(genome_db[key][1][0] < threshold): #and that thing has edge weight < threshold
-                del genome_db[key]
+                del temp[key]
 
         elif(len(genome_db[key][1]) > 1): #if theres more...search
-            for j in range(len(genome_db[key][0])):
+            for j in range(len(genome_db[key][1])):
                 if(genome_db[key][1][j] < threshold):
-                    genome_db[key][0].pop(j)
-                    genome_db[key][1].pop(j)
+                    temp[key][0].pop(j)
+                    temp[key][1].pop(j)
                     j -= 1
 
 
