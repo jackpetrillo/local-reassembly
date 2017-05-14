@@ -104,7 +104,7 @@ def main():
     # genome_kmerlist = db.kmerList(gene_k, gene)
     # genome_db, kmer_positions = db.create_Debruijn(genome_kmerlist)
 
-    gene_k = 30
+    gene_k = 45
     prob = 50
     read_length = 50
 
@@ -115,7 +115,7 @@ def main():
     mat = gene[:-3] + 'Z' + gene[-2:]
 
     #pat = gene[:-3] + 'Z' + gene[-2:]
-    pat = gene
+    pat = gene[:-50] + "X" + gene[-49:]
 
     reads, positions = uniform_reads(mat, pat, gene, 15, 50)
 

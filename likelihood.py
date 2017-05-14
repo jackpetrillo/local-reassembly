@@ -7,7 +7,7 @@ CS 321
 import threading as th
 import collections as c
 
-def path_scores(genome_db, start_kmer):
+def path_scores(genome_db, genome_hash, start_kmer):
     """
     Traverses all paths and makes a new graph with each paths likelihood scores.
     scores are computed as such:
@@ -19,10 +19,14 @@ def path_scores(genome_db, start_kmer):
 
     start_node = (start_kmer, 1.0) #where we start...
     to_search = c.deque()
+    for k in range(1000):
+        print("")
 
-    while start_node[0] in genome_db: #while the node is in the graph (Not the last node)
-
-        print("RUNNING")
+    i = 0
+    #while start_node[0] in genome_db: #while the node is in the graph (Not the last node)
+    #print len(genome_db.keys())
+    while i < len(genome_db.keys()): #arbitrary? shouldnt be going through keys multiple times
+        #print("RUNNING")
         node = start_node[0]
         denominator = sum(genome_db[node][1])
 
@@ -30,14 +34,25 @@ def path_scores(genome_db, start_kmer):
             end_node = genome_db[node][0][j]
             path_prob = start_node[1]*(genome_db[node][1][j] / float(denominator))
             to_search.append((end_node, path_prob))
-            print("Start "  + node)
-            print("END " + end_node)
-            print("Score " + str(path_prob))
+            #print("Start "  + node)
+            #print("END " + end_node)
+            #print("Score " + str(path_prob))
+            if node in path_scores:
+                path_scores[node][0].append(end_node)
+                path_scores[node][1].append(path_prob)
+            else:
+                path_scores[node] = [[end_node],[path_prob]]
 
         start_node = to_search.popleft()
 
+        i +=1
+
 
     print(path_scores)
+
+    with open("likelihood_graph.txt", "w") as text_file:
+        text_file.write(str(path_scores))
+    #print(genome_hash["ACGCCTGTAATCCCAGCACTTTGGGAGGC"])
 
 
 
@@ -50,7 +65,7 @@ def main():
         print("THIS WORKED")
 
 
-    path_scores(genome_db, "CGTGACCCTCAGGTGATGCGCCAGGGCCG")
+    path_scores(genome_db, kmer_positions, "CGTGACCCTCAGGTGATGCGCCAGGGCCGGCTGCCGTCGGGGAC")
 
 
 
