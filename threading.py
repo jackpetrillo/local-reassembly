@@ -104,7 +104,7 @@ def main():
     # genome_kmerlist = db.kmerList(gene_k, gene)
     # genome_db, kmer_positions = db.create_Debruijn(genome_kmerlist)
 
-    gene_k = 15
+    gene_k = 30
     prob = 50
     read_length = 50
 

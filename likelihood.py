@@ -17,11 +17,28 @@ def path_scores(genome_db, start_kmer):
     """
     path_scores = {}
 
-    node = start_kmer #where we start...
+    start_node = (start_kmer, 1.0) #where we start...
     to_search = c.deque()
 
-    while node in genome_db: #while the node is in the graph (Not the last node)
-        
+    while start_node[0] in genome_db: #while the node is in the graph (Not the last node)
+
+        print("RUNNING")
+        node = start_node[0]
+        denominator = sum(genome_db[node][1])
+
+        for j in range(len(genome_db[node][0])):
+            end_node = genome_db[node][0][j]
+            path_prob = start_node[1]*(genome_db[node][1][j] / float(denominator))
+            to_search.append((end_node, path_prob))
+            print("Start "  + node)
+            print("END " + end_node)
+            print("Score " + str(path_prob))
+
+        start_node = to_search.popleft()
+
+
+    print(path_scores)
+
 
 
 
@@ -29,9 +46,11 @@ def path_scores(genome_db, start_kmer):
 
 def main():
     genome_db, kmer_positions, gene = th.main()
+    if "CGTGACCCTCAGGT" in genome_db:
+        print("THIS WORKED")
 
 
-    path_scores(genome_db, "CGTGACCCTCAGGT")
+    path_scores(genome_db, "CGTGACCCTCAGGTGATGCGCCAGGGCCG")
 
 
 
