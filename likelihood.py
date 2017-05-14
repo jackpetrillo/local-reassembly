@@ -8,7 +8,7 @@ import threading as th
 import collections as c
 import numpy as np
 
-def path_scores(genome_db, genome_hash, ref_gene, start_kmer):
+def path_score(genome_db, genome_hash, ref_gene, start_kmer):
     """
     Traverses all paths and makes a new graph with each paths likelihood scores.
     scores are computed as such:
@@ -29,7 +29,7 @@ def path_scores(genome_db, genome_hash, ref_gene, start_kmer):
 
 
     while(start_node[0] in genome_db):
-        
+
         node = start_node[0]
         node_position = genome_hash[node][0] #picking arbitrary first location
         node_prob = start_node[1]
@@ -59,50 +59,43 @@ def path_scores(genome_db, genome_hash, ref_gene, start_kmer):
         for j in range(len(path_kmers[index])):
             print("kmer: " + path_kmers[index][j] + " with probability " + str(path_scores[index][j]))
 
+    return path_kmers, path_scores
 
 
-    #while start_node[0] in genome_db: #while the node is in the graph (Not the last node)
-    # while (i < len(genome_db.keys())) and (start_node[0] in genome_db): #arbitrary? shouldnt be going through keys multiple times
-    #
-    #     node = start_node[0]
-    #     denominator = sum(genome_db[node][1])
-    #     print("The start node is at: " + str(genome_hash[node]))
-    #
-    #     for j in range(len(genome_db[node][0])):
-    #         end_node = genome_db[node][0][j]
-    #         print("It points to nodes at : " + str(genome_hash[end_node]))
-    #
-    #         path_prob = start_node[1]*(genome_db[node][1][j] / float(denominator))
-    #
-    #         to_search.append((end_node, path_prob))
-    #
-    #         if node in path_scores:
-    #             path_scores[node][0].append(end_node)
-    #             path_scores[node][1].append(path_prob)
-    #         else:
-    #             path_scores[node] = [[end_node],[path_prob]]
-    #
-    #     start_node = to_search.popleft()
-    #
-    #     i +=1
+def variant_regions(path_kmers, path_scores):
+
+    var_starts = []
+    var_ends = []
+
+    run = False
+
+    for i in range(len(path_kmers)):
+        if(run == False and len(path_kmers[i]) > 1):
+            run = True
+            var_starts.append(i)
+
+        if(run == True and len(path_kmers[i]) == 1):
+            var_ends.append(i)
+            run = False
+
+        if(run == True and i == len(path_kmers) - 1):
+            var_ends.append(i)
 
 
-
-    #print(path_scores)
-
-    # with open("likelihood_graph.txt", "w") as text_file:
-    #     text_file.write(str(path_scores))
-
-
-
-
+    return var_starts, var_ends
 
 
 def main():
     genome_db, kmer_positions, gene = th.main()
 
 
-    path_scores(genome_db, kmer_positions, gene, "CGTGACCCTCAGGTGATGCGCCAGGGCCGGCTGCCGTCGGGGAC")
+    path_kmers, path_scores = path_score(genome_db, kmer_positions, gene, "CGTGACCCTCAGGTGATGCGCCAGGGCCGGCTGCCGTCGGGGAC")
+
+    var_starts, var_ends = variant_regions (path_kmers, path_scores)
+
+    for j in range(len(var_ends)):
+        print("variant start: " + str(var_starts[j]))
+        print("variant end: " + str(var_ends[j]))
 
 
 
