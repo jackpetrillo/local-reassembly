@@ -8,7 +8,11 @@ CS 321
 import sys
 
 def get_gene(filename):
-
+    """
+    Takes as an input a file name to read.
+    Ignores the first line of the file (has identifying info in applicable genome files).
+    Returns a string of gene devoid of new line chars.
+    """
     with open(filename, 'r') as file_object:
         file_object.readline()
         input_str = file_object.read().strip()
@@ -22,7 +26,7 @@ def create_Debruijn(kmerList):
     representation of the de bruijn graph.
     """
     dictionary = {}
-    kmer_positions = {}
+    kmer_positions = {} #hash table of unique kmers
 
     for i in range(len(kmerList)-1): #iterate over all kmers (besides last)
         if(kmerList[i] in dictionary):
@@ -31,10 +35,10 @@ def create_Debruijn(kmerList):
             templist[1].append(0)
             dictionary[kmerList[i]] = templist #update list
 
-            kmer_positions[kmerList[i]].append(i)
+            kmer_positions[kmerList[i]].append(i) #update locations
         else:
             dictionary[kmerList[i]] = [[kmerList[i+1]], [0]] #create 1 element list
-            kmer_positions[kmerList[i]] = [i]
+            kmer_positions[kmerList[i]] = [i] #create hash table location
 
     return dictionary, kmer_positions
 
@@ -54,6 +58,7 @@ def kmerList(k, word):
 def print_Debruijn(graph):
     """
     Passed an adjacency list representation of a de bruijn graph. Prints the graph.
+    Used for debugging.
     """
 
     for key in graph: #printing all node -> outgoing nodes
@@ -69,22 +74,13 @@ def print_Debruijn(graph):
 
 def main(k):
     """
-    The main method reads a string from an input file. Creates a kmer list and passes the list to
+    Takes an integer k as a parameters.
+    The main method reads a string from an input file.  Creates a kmer list and passes the list to
     the dict_create() function which returns a dictionary of an adjacency list representation
-    of the overlap de bruijn graph.
+    of the overlap de bruijn graph, as well as the kmer position hash table, and the gene.
     """
 
     gene = get_gene("OPN1LW.txt")
-
-    # kmer_size_list = [10, 25]
-    # for k in kmer_size_list:
-    #     print("THIS IS THE GRAPH FOR KMER SIZE: " + str(k))
-    #
-    #     klist = kmerList(k-1, gene) #create kmer list (with k - 1)
-    #
-    #     final_dict, kmer_positions = create_Debruijn(klist) #adjacency list dictionary
-    #
-    #     print_Debruijn(final_dict)
 
     klist = kmerList(k-1, gene) #create kmer list (with k - 1)
 

@@ -9,6 +9,9 @@ from random import randint
 
 def get_gene(filename):
     """
+    Takes as an input a file name to read.
+    Ignores the first line of the file (has identifying info in applicable genome files).
+    Returns a string of gene devoid of new line chars.
     """
     with open(filename, 'r') as file_object:
         file_object.readline()
@@ -20,6 +23,8 @@ def get_gene(filename):
 
 def rand_variant(seq, prob):
     """
+    Takes a sequence and a probability.
+    Each character independently changes to a new character with proabibility prob.
     """
     nuc_bases = "ACGT"
     new_seq = ""
@@ -50,6 +55,9 @@ def readList(read_len, seq):
 
 
 def main():
+    """
+    Main method for testing. Never called.
+    """
     gene = get_gene("OPN1LW.txt")
     #gene = "ACTGCCCGGGTTT"
     #print(gene)

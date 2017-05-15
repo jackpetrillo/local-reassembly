@@ -52,11 +52,15 @@ def path_score(genome_db, genome_hash, ref_gene, start_kmer):
             to_search.append((end_node, path_prob))
 
         start_node = to_search.popleft()
+        
     return path_kmers, path_scores
 
 
 def variant_regions(path_kmers, path_scores):
-
+    """
+    Returns two arrays, where each indices corresponds to a start index and end index
+    for potential variant sites.
+    """
     var_starts = []
     var_ends = []
 
@@ -79,21 +83,32 @@ def variant_regions(path_kmers, path_scores):
 
 
 def main():
-    genome_db, kmer_positions, gene = th.main()
+    """
+    Runs main method of threading.py to get the threaded graph, hash table, gene,
+    and # of pruned edges.
+    Passes to path_score() which calculates path proabibility scores.
+    Passes to variant_regions() which traces the graph and returns arrays with
+    locations of possible variants.
+    Prints results.
+    """
+    genome_db, kmer_positions, gene, pruned = th.main()
 
-
+    #hard coded for 45
     path_kmers, path_scores = path_score(genome_db, kmer_positions, gene, "CGTGACCCTCAGGTGATGCGCCAGGGCCGGCTGCCGTCGGGGAC")
-
-    var_starts, var_ends = variant_regions (path_kmers, path_scores)
-
+    #gets arrays for variant stars/ends
+    var_starts, var_ends = variant_regions(path_kmers, path_scores)
+    #prints pruned edges
+    print("Pruned edges: " + str(pruned))
+    #Prints variants
     for j in range(len(var_ends)):
-        print("variant start: " + str(var_starts[j]))
-        print("variant end: " + str(var_ends[j]))
+        print(str(j) + ": Potential Variant Start: " + str(var_starts[j]) + "\t Variant End: " +  str(var_ends[j]))
 
+    #writes to files for debugging
     with open("haplo_likelihood.txt", "w") as text_file:
         for j in range(len(var_ends)):
             text_file.write(str(var_starts[j]) + '\n')
             text_file.write(str(var_ends[j]) + '\n')
+
 
 if __name__ == '__main__':
     main()
