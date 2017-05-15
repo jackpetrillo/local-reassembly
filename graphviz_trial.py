@@ -35,6 +35,10 @@ def get_likelihood_pos(filename):
 def output_digraph(positions, len_gene):
     """
     """
+    node[style=filled, color=cornflowerblue, fontcolor=white, fontsize=10,
+        fontname="Helvetica"]
+    edge[arrowhead=vee, arrowtail=inv, arrowsize=.7, color=maroon, fontsize=10,
+        fontcolor=navy]
     alph_ind = 0
     cur_char = ascii_uppercase[alph_ind]
 

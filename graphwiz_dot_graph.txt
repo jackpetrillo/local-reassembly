@@ -1,0 +1,25 @@
+digraph {
+    edge[arrowhead=vee, arrowtail=inv, arrowsize=.7, color=maroon, fontsize=10,
+        fontcolor=navy]
+	A [label=0]
+	B [label=14716]
+		A -> B [constraint=false]
+	C [label=14760]
+		B -> C [constraint=false]
+    edge[arrowhead=vee, arrowtail=inv, arrowsize=.7, color=blue, fontsize=10,
+        fontcolor=navy]
+		B -> C [constraint=false]
+	D [label=14763]
+    edge[arrowhead=vee, arrowtail=inv, arrowsize=.7, color=maroon, fontsize=10,
+        fontcolor=navy]
+		C -> D [constraint=false]
+	E [label=14765]
+		D -> E [constraint=false]
+    edge[arrowhead=vee, arrowtail=inv, arrowsize=.7, color=blue, fontsize=10,
+        fontcolor=navy]
+		D -> E [constraint=false]
+	Z [label=14807]
+    edge[arrowhead=vee, arrowtail=inv, arrowsize=.7, color=maroon, fontsize=10,
+        fontcolor=navy]
+		E -> Z [constraint=false]
+}

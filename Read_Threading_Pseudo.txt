@@ -1,0 +1,14 @@
+
+
+Algorithm 2: Read Threading
+
+1: for all reads:
+2: 		read_kmers <- list of kmers in read
+3:		for current_kmer in read_kmers:
+4:			if current_kmer in graph:
+5:				update/add edge from current_kmer to next_kmer
+6:			else:
+7:				create new edge
+8:				update position_hash
+9: return:
+10: 	graph, position_hash
